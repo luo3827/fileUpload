@@ -1,0 +1,250 @@
+<!DOCTYPE HTML>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link href="assets/css/style.min.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/fileinput.min.css" rel="stylesheet">
+    <style>
+        .krajee-default.file-preview-frame .kv-file-content {
+            margin: 0 auto;
+        }
+        .krajee-default.file-preview-frame {
+            float:inherit;
+        }
+        .krajee-default .file-footer-caption {
+            margin-bottom: 5px;
+        }
+
+        #layui-layer-shade1{
+            z-index: 1989!important;
+        }
+        #layui-layer1{
+            z-index: 1990!important;
+        }
+        #kvFileinputModal .modal-dialog{
+            z-index: 2000!important;
+        }
+        #kvFileinputModal .modal-content{
+            z-index: 2001!important;
+        }
+        .btn-file{
+            margin-left:15px !important;
+        }
+    </style>
+</head>
+
+<body>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <form class="form-horizontal m-t" id="jxyjsb_AddForm" name="jxyjsb_AddForm" novalidate="novalidate"  enctype="multipart/form-data">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">意见类别：</label>
+                    <div class="col-sm-3">
+                        <select id="jxyjlb" class="form-control" name="jxyjlb" onchange="yjlbcx(this)">
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+
+                    <label class="col-sm-3 control-label">相关部门(院系)：</label>
+                    <div class="col-sm-3">
+                        <select id="bmid" class="form-control" name="bmid" >
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">教育层次：</label>
+                    <div class="col-sm-3">
+                        <select id="jyccid" class="form-control required" name="jyccid" >
+                        </select>
+                    </div>
+                    <label class="col-sm-3 control-label">是否匿名：</label>
+                    <div class="col-sm-3">
+                        <select id="sfnm"  name="sfnm" class="form-control help-block m-b-none">
+                            <option value="1" >不匿名</option>
+                            <option value="0" selected>匿名</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">意见标题：</label>
+                    <div class="col-sm-9">
+                        <textarea id="jxxxbt"  class="jxyj-textarea-style form-control required" name="jxxxbt"  maxlength="64" placeholder="最多输入64个汉字" ></textarea>
+                    </div>
+                </div>
+                <div class=" form-group">
+                    <label class="col-sm-2 control-label">意见内容：</label>
+                    <div class="col-sm-9">
+                        <textarea id="jxxxnr"  class="jxyj-textarea-style form-control required" name="jxxxnr"  rows="8" maxlength="512" placeholder="最多输入512个汉字"></textarea>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+    <div class="row form-horizontal">
+        <div class="col-xs-12">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">相关照片：</label>
+                <div class="col-sm-9">
+                    <div class="no-padding-left  padding-right-5 file-loading">
+                        <input id="ysfj1" type="file" name="file"  multiple>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<buton onclick="text01()">test</buton>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery-ui-1.10.4.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/fileinput.min.js"></script>
+<script src="assets/js/zh.js"></script>
+<script type="text/javascript">
+    /**
+     * 图片初始加载
+     * @param eventId
+     * @param gif|jpg|jpeg|png|GIF|JPG|PNG
+     * @returns {boolean}
+     */
+
+
+    $("#ysfj1").fileinput({
+        language: 'zh',
+        uploadUrl: "/..",
+        showUpload: false,
+        dropZoneEnabled: false,
+        validateInitialCount:true,
+        minFileCount:1,
+        maxFileCount:3,
+        overwriteInitial: true,
+        autoReplace:false,
+        allowedFileExtensions : ['jpg', 'png','gif'],
+        mainClass: "input-group-lg",
+        removeFromPreviewOnError:true,
+        layoutTemplates: {
+            actionUpload: '',
+            actionDelete:''
+        }
+    });
+
+//    方式1：在不使用javascript的split方法时，将字符串转数组
+    function toArray(str,separator){
+        var arr=new Array();
+        if(separator.length==0){
+            for(var i=0;i<str.length;i++){
+                arr.push(str[i]);
+            }
+        }else{
+            for(var i=0;i<=str.length;i++){
+                var index=i;
+                if(str.indexOf(separator,index)!=-1){
+                    index=str.indexOf(separator,index);
+                    arr.push(str.substring(i,index));  //获取是从  i处到 index-1 处的所有字符,存储到数组
+                    i=index+separator.length-1;
+                }
+            }
+            var last=str.lastIndexOf(separator);
+            if(last!=-1&&(last<=str.length-1)){   //判断分隔符separator最后出现的位置是否存在
+                arr.push(str.substring(last+separator.length));
+            }else if(str.indexOf(separator)==-1){
+                arr.push(str);
+            }
+        }
+
+        return arr;
+    }
+
+//    方式2：在不使用javascript的split方法时，将字符串转数组
+    function toArray2(str,separator){
+        var arr=new Array();
+        for(var i=0;i<=str.length;i++){
+            if(separator.length==0){
+                    if(i<str.length){
+                        arr.push(str[i]);
+                    }
+
+
+            }else{
+                var index=str.indexOf(separator);
+                if(index!=-1){
+                    arr.push(str.substring(i,index));
+                    str=str.substring(index+separator.length,str.length);
+                    i=-1;
+                }else{
+                    arr.push(str);
+                    break;
+                }
+            }
+
+        }
+        return arr;
+    }
+//    方式3：在不使用javascript的split方法时，将字符串转数组----存在问题？？？
+    function toArray3(str,separator){
+        var arr=new Array();
+        var a=0;  //记录标识符在字符串中出现的次数
+        debugger
+        for(var i in str){
+            if(str[i] == separator ){
+                a++;
+            }
+        }
+        //遍历a
+        for(var i=0;i<=a;i++){
+            var index=str.indexOf(separator);
+            if(index!=-1){
+                arr.push(str.substring(0,index));
+                str=str.substring(index+separator.length);
+            }else{
+                arr.push(str);
+            }
+        }
+        return arr;
+    }
+
+
+    function text01(){
+        var abc="axe***b**c,k,f,e,rt:";
+        console.log(abc);
+        console.log("//////////,/////////////");
+        console.log(abc.split(","));
+        console.log(toArray(abc,","));
+        console.log(toArray2(abc,","));
+//        console.log(toArray3(abc,","));
+        console.log("//////////**/////////////");
+        console.log(abc.split("**"));
+        console.log(toArray(abc,"**"));
+        console.log(toArray2(abc,"**"));
+//        console.log(toArray3(abc,"**"));
+        console.log("//////////*/////////////");
+        console.log(abc.split("*"));
+        console.log(toArray(abc,"*"));
+        console.log(toArray2(abc,"*"));
+//        console.log(toArray3(abc,"*"));
+        console.log("//////////://///////////");
+        console.log(abc.split(":"));
+        console.log(toArray(abc,":"));
+        console.log(toArray2(abc,":"));
+//        console.log(toArray3(abc,":"));
+        console.log("//////////?/////////////");
+        console.log(abc.split("?"));
+        console.log(toArray(abc,"?"));
+        console.log(toArray2(abc,"?"));
+//        console.log(toArray3(abc,"?"));
+        var x="asdfghj";
+        console.log("//////////空格/////////////");
+        console.log(x.split(""));
+        console.log(toArray(x,""));
+        console.log(toArray2(x,""));
+    }
+
+</script>
+</body>
+</html>
